@@ -5,6 +5,7 @@ import configparser
 proDir = os.path.split(os.path.realpath(__file__))[0]
 configPath = os.path.join(proDir, "config.ini")
 
+
 class ReadConfig:
     def __init__(self):
         fd = open(configPath)

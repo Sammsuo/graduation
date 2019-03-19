@@ -1,14 +1,18 @@
 import unittest
 import paramunittest
-from testPlaform.main_center.utils import common
+from main_center.utils import common
+from main_center.utils import readConfig
+from main_center.utils import configHttp
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
 import json
-API_list = req.body
-localReadConfig = readConfig.customerReadConfig()
+APIlist = ''
+localReadConfig = readConfig.ReadConfig()
 
-configHttp = ConfigHttp.customerConfigHttp()
+localConfigHttp = configHttp.configHttp()
 localDB = customerConfigDB.CustomerDB()
 flag = common.get_flag()
+
+
 @paramunittest.parametrized(*API_list)
 class TimeShare(unittest.TestCase):
     def __init__(self):
@@ -52,34 +56,33 @@ class TimeShare(unittest.TestCase):
         """
 
         # --------------------- set url ---------------------
-        if common.check_url(self.url) == True:  # 检查URL 是全的
-            configHttp.set_all_url(self.url)
+        if common.check_url(self.url) is True:  # 检查URL 是全的
+            localConfigHttp.set_all_url(self.url)
         else:
-            configHttp.set_url(self.url)
+            localConfigHttp.set_url(self.url)
 
         print("\n第一步：设置url:\t" + self.url)
         # --------------------- set headers ---------------------
 
-        configHttp.set_headers(json.loads(self.headers))
+        localConfigHttp.set_headers(json.loads(self.headers))
 
-        print("\n第二步：设置header:\t" + str(configHttp.headers))
+        print("\n第二步：设置header:\t" + str(localConfigHttp.headers))
 
         # --------------------- set params ---------------------
 
         dict_params = json.loads(self.params)
-        configHttp.set_params(dict_params)
+        localConfigHttp.set_params(dict_params)
 
-        print("\n第三步：设置发送请求的参数\t" + '\n' + json.dumps(configHttp.params, ensure_ascii=False, sort_keys=True,
+        print("\n第三步：设置发送请求的参数\t" + '\n' + json.dumps(localConfigHttp.params, ensure_ascii=False, sort_keys=True,
                                                       indent=4))
 
         # --------------------- test interface ---------------------
         if self.method == "post":
-            self.return_json = configHttp.post()
+            self.return_json = localConfigHttp.post()
         elif self.method == "get":
-            self.return_json = configHttp.get()
+            self.return_json = localConfigHttp.get()
 
         # self.return_json = configHttp.post()
-        localReadConfig.set_customer('return_json', json.dumps(self.return_json.json()['result']))
         request_type = str(self.return_json.request)[
                        int(str(self.return_json.request).find('[')) + 1:int(
                            str(self.return_json.request).find(']'))]
@@ -105,7 +108,7 @@ class TimeShare(unittest.TestCase):
 
             self.logger.info("URL：\n" + self.return_json.url)
             self.logger.info(
-                "Request：\n" + json.dumps(configHttp.params, ensure_ascii=False, sort_keys=True, indent=4))
+                "Request：\n" + json.dumps(localConfigHttp.params, ensure_ascii=False, sort_keys=True, indent=4))
 
             # show return message
             common.show_return_msg(self.return_json)
@@ -131,7 +134,7 @@ class TimeShare(unittest.TestCase):
             raise AssertionError(repr(ex))
         '''
         else:
-            self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
-            self.log.build_end_line(self.case_name)
+        #     self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
+        #     self.log.build_end_line(self.case_name)
             print("\n第五步：检查结果:\t测试通过\t" + self.info['code'] + "\t" + self.info['msg'])
             print('\n' + '\n')

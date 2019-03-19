@@ -2,6 +2,7 @@ import os
 import xlrd
 import openpyxl
 import re
+import json
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
 
@@ -39,6 +40,9 @@ def check_url(url):
     else:
         return False
 
+def show_return_msg(response):
+    msg = response.text
+    print("\n请求返回值: " + '\n' + json.dumps(json.loads(msg), ensure_ascii=False, sort_keys=True, indent=4))
 
 if __name__ == '__main__':
     print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))

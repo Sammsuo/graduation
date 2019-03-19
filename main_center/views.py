@@ -5,7 +5,6 @@ from django.http import JsonResponse
 import unittest
 import paramunittest
 import main_center.utils.common
-from utils.customer_utils import customerConfigHttp as ConfigHttp
 
 # Create your views here.
 
