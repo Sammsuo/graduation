@@ -1,6 +1,6 @@
 import unittest
 import paramunittest
-import main_center.utils.common
+from testPlaform.main_center.utils import common
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
 import json
 API_list = req.body
@@ -8,9 +8,12 @@ localReadConfig = readConfig.customerReadConfig()
 
 configHttp = ConfigHttp.customerConfigHttp()
 localDB = customerConfigDB.CustomerDB()
-
+flag = common.get_flag()
 @paramunittest.parametrized(*API_list)
 class TimeShare(unittest.TestCase):
+    def __init__(self):
+        self.flag = common
+
     def setParameters(self, case_name, url, method, headers, params, code, msg):
         """
         set Params
@@ -49,8 +52,10 @@ class TimeShare(unittest.TestCase):
         """
 
         # --------------------- set url ---------------------
-
-        configHttp.set_url(self.url)
+        if common.check_url(self.url) == True:  # 检查URL 是全的
+            configHttp.set_all_url(self.url)
+        else:
+            configHttp.set_url(self.url)
 
         print("\n第一步：设置url:\t" + self.url)
         # --------------------- set headers ---------------------

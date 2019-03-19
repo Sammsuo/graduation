@@ -43,6 +43,8 @@ def _get_req_json_dic(data, code=0, msg='success'):
     return result_data
 
 
-def testAPI(file_url):
+def testAPI(file_url):  #  代替runall
+    pass  # TODO:接收前端信息
+
 
 

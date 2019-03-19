@@ -1,6 +1,8 @@
 import os
 import xlrd
 import openpyxl
+import re
+
 proDir = os.path.split(os.path.realpath(__file__))[0]
 
 
@@ -27,11 +29,16 @@ def get_xlsx_sheeet(excel_name):
     return cls
 
 
-def set_all_url(url):
-    return url
+def check_url(url):
+    check_rule_r = r'(https?:.*?:.*?/)'
+    check_rule_p = re.compile(check_rule_r)
+    check_rule_c = re.findall(check_rule_p, url)
+    print(check_rule_c)
+    if len(check_rule_c) != 0:
+        return True
+    else:
+        return False
 
 
-def set_url(url):
-    new_url = scheme + '://' + baseurl + ':' + port + url
-    return new_url
-
+if __name__ == '__main__':
+    print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
