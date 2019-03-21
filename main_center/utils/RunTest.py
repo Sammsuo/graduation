@@ -12,7 +12,7 @@ class RunTest:
         global resultPath, on_off
         resultPath = common.get_report_path()  # TODO
         on_off = localReadConfig.get_email('on_off')
-        self.caseRoot = readConfig.proDir  # testAPI文件路径
+        self.caseRoot = os.path.join(readConfig.proDir, 'testCase')# testAPI文件路径
         self.caseTest = ''
         self.email = configEmail.MyEmail.get_email()  # TODO
 

@@ -33,6 +33,9 @@ def get_post(req):
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
+def runAPITest(req):
+    pass
+
 def _get_req_json_dic(data, code=0, msg='success'):
     result_data = {
         'code': code,

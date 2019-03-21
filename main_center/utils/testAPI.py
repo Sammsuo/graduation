@@ -5,7 +5,7 @@ from main_center.utils import readConfig
 from main_center.utils import configHttp
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
 import json
-API_list = ''
+API_list = common.get_file()
 localReadConfig = readConfig.ReadConfig()
 
 localConfigHttp = configHttp.configHttp()

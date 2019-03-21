@@ -64,6 +64,28 @@ def get_result_path():
     """
     return reportPath
 
+
+def save_file():
+    """
+    保存excel文件
+    :return:
+    """
+    pass
+
+
+def get_file():
+    """
+    获取文件
+    :return:
+    """
+    pass
+
+def delete_file():
+    """
+    删除文件
+    :return:
+    """
+
 if __name__ == '__main__':
     #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
     print(proDir)
