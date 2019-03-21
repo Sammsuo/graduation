@@ -3,9 +3,11 @@ import xlrd
 import openpyxl
 import re
 import json
+from datetime import datetime
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
-
+resultPath = os.path.join(proDir,'result')
+reportPath = os.path.join(resultPath, str(datetime.now().strftime("%Y%m%d%H%M%S")))
 
 def get_xlsx_sheeet(excel_name):
     """
@@ -40,9 +42,29 @@ def check_url(url):
     else:
         return False
 
+
 def show_return_msg(response):
     msg = response.text
     print("\n请求返回值: " + '\n' + json.dumps(json.loads(msg), ensure_ascii=False, sort_keys=True, indent=4))
 
+
+def get_report_path():
+    """
+    获取报告文件路径
+    :return:
+    """
+    report_path = os.path.join(reportPath, 'report.html')
+    return report_path
+
+
+def get_result_path():
+    """
+    获取报告结果路径
+    :return:
+    """
+    return reportPath
+
 if __name__ == '__main__':
-    print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
+    #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
+    print(proDir)
+    print(resultPath)

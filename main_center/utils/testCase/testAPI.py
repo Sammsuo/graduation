@@ -5,11 +5,10 @@ from main_center.utils import readConfig
 from main_center.utils import configHttp
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
 import json
-APIlist = ''
+API_list = ''
 localReadConfig = readConfig.ReadConfig()
 
 localConfigHttp = configHttp.configHttp()
-localDB = customerConfigDB.CustomerDB()
 flag = common.get_flag()
 
 

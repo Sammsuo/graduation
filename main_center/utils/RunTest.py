@@ -10,9 +10,9 @@ localReadConfig = readConfig.ReadConfig()
 class RunTest:
     def __init__(self):
         global resultPath, on_off
-        resultPath = log.get_report_path  # TODO
+        resultPath = common.get_report_path()  # TODO
         on_off = localReadConfig.get_email('on_off')
-        self.caseRoot = readConfig.proDir # testAPI文件路径
+        self.caseRoot = readConfig.proDir  # testAPI文件路径
         self.caseTest = ''
         self.email = configEmail.MyEmail.get_email()  # TODO
 
@@ -20,8 +20,49 @@ class RunTest:
         self.caseTest = 'testAPI.py'
 
     def set_case_suite(self):
-        self.set_case_test()
+        self.set_case_test()   # 设置了 执行文件
         test_suite = unittest.TestSuite()
-        suit_module = []
+        suite_module = []
 
-        
+        discover = unittest.defaultTestLoader.discover(self.caseRoot, pattern=self.caseTest, top_level_dir=None)
+
+        suite_module.append(discover)
+
+        if len(suite_module) > 0:
+            for suite in suite_module:
+                for test_name in suite:
+                    test_suite.append(test_name)
+        else:
+            return None
+
+    def run(self):
+        """
+        run test
+        :return:
+        """
+        try:
+            suit = self.set_case_suite()
+            if suit is not None:
+                #  logger.info("********** TEST START ***********")
+                fp = open(resultPath, 'wb')
+                runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
+                runner.run(suit)
+            else:
+                print('Have no case to test.')
+        except Exception as ex:
+            print(str(ex))
+        finally:
+            print('########  Test End ##########')
+            fp.close()
+
+            # send email
+            if on_off == 'on':
+                self.email.send_email()
+            elif on_off == 'off':
+                print('不发送邮件')
+            else:
+                print('Unknow state.')
+
+if __name__ == '__main__':
+    la = RunTest()
+    la.run()

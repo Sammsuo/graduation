@@ -32,7 +32,7 @@ class ReadConfig:
 
     def set_http(self, name, value):
         self.cf.set('HTTP', name, value)
-        with open(configPath, 'w+') as f :
+        with open(configPath, 'w+') as f:
             self.cf.write(f)
 
     def get_headers(self, name):
