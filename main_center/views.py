@@ -8,9 +8,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
 from main_center.utils import RunTest
-import unittest
-import paramunittest
-import main_center.utils.common
+from main_center.utils import common
 import xlrd
 import openpyxl
 
@@ -54,6 +52,7 @@ def run_api_test(req):  # 上传
         print('进来啦')
         hey = RunTest.RunTest()
         hey.run()
+        common.delete_file()
         return JsonResponse(_get_req_json_dic("", 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
@@ -63,10 +62,15 @@ def run_check_ddl(req):
     pass
 
 
-def handle_upload_file(req):  # TODO 完善处理上传的文件
-    if req.method == 'POST':
-        file = req.FILES.get('file')  # 前端返回是文件
-        print(file)
+def handle_remove(req):
+    if req.method == 'post' or 'POST':
+        print('进来啦')
+        file = json.loads(req.body)
+        common.delete_file_by_name(file['name'])
+        return JsonResponse(_get_req_json_dic('', 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
+
 
 
 def testUp(req):
@@ -75,7 +79,7 @@ def testUp(req):
         excel = req.FILES.get('file')
         excel_name = req.FILES.get('file').name
         path = default_storage.save('/Users/sam/PycharmProjects/graduation/main_center/utils/testFile/' + excel_name, ContentFile(excel.read()))
-        tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+        tmp_file = os.path.join(settings.MEDIA_ROOT, path)  # TODO
         return JsonResponse(_get_req_json_dic(""))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
@@ -90,8 +94,7 @@ def _get_req_json_dic(data, code=0, msg="success"):
     return result_data
 
 
-def testAPI(file_url):  #  代替runall
-    pass  # TODO:接收前端信息
+
 
 
 

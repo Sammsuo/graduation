@@ -12,14 +12,14 @@ class ReadConfig:
         data = fd.read()
 
         #  remove BOM
-        if data[:3] == codecs.BOM_UTF8:
+        if data[:3] == codecs.BOM_UTF8:  # TODO
             data = data[3:]
             file = codecs.open(configPath, "w")
             file.write(data)
             file.close()
         fd.close()
 
-        self.cf = configparser.ConfigParser()
+        self.cf = configparser.ConfigParser()  # TODO
         self.cf.read(configPath)
 
     def get_email(self, name):

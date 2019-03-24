@@ -47,13 +47,6 @@ def get_result_path():
     return reportPath
 
 
-def save_file():
-    """
-    保存excel文件
-    :return:
-    """
-    pass
-
 
 def get_file():
     """
@@ -93,7 +86,27 @@ def delete_file():
     删除文件
     :return:
     """
-    pass
+    delete_path = os.path.join(proDir, 'testFile')
+    dirs = os.listdir(delete_path)
+    for i in dirs:
+        if i.endswith('.xlsx') or i.endswith('.xls'):
+            os.remove(os.path.join(delete_path, i))
+    return '删除完毕'
+
+def delete_file_by_name(name):
+    """
+    通过文件名删除文件
+    :param name:
+    :return:
+    """
+    delete_path = os.path.join(proDir, 'testFile')
+    dirs = os.listdir(delete_path)
+    for i in dirs:
+        if i == name:
+            os.remove(os.path.join(delete_path, i))
+            return True
+        else:
+            return False
 
 def download_file():
     """
@@ -106,3 +119,4 @@ if __name__ == '__main__':
     print(proDir)
     print(resultPath)
     get_file()
+    delete_file()
