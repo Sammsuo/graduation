@@ -6,9 +6,9 @@ readconfig = readConfig.ReadConfig()
 
 class configHttp:
     def __init__(self):
-        global scheme, host, port, timeout
+        global scheme, baseurl, port, timeout
         scheme = readconfig.get_http('scheme')
-        host = readconfig.get_http('host')
+        baseurl = readconfig.get_http('baseurl')
         port = readconfig.get_http('port')
         timeout = readconfig.get_http('timeout')
         self.url = None
@@ -19,9 +19,9 @@ class configHttp:
         self.url = url
 
     def set_url(self, url):
-        self.url = scheme + '://' + host + ':' + port + url
+        self.url = scheme + '://' + baseurl + ':' + port + url
 
-    def set_params(self, *param):
+    def set_params(self, param):
         self.params = param
 
     def set_headers(self, headers):
@@ -34,7 +34,7 @@ class configHttp:
         :return:
         """
         try:
-            response = requests.post(self.url, json = self.params, headers = self.headers, cookies = cookies, timeout=float(timeout))
+            response = requests.post(self.url, json=self.params, headers = self.headers, cookies = cookies, timeout=float(timeout))
 
             return response
         except TimeoutError:
@@ -46,7 +46,7 @@ class configHttp:
         :return:
         """
         try:
-            response = requests.post(self.url, headers = self.headers, params = self.params, timeout = float(timeout))
+            response = requests.post(self.url, headers=self.headers, params=self.params, timeout=float(timeout))
             return response
         except TimeoutError:
             return None

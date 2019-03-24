@@ -23,17 +23,16 @@ class RunTest:
         self.set_case_test()   # 设置了 执行文件
         test_suite = unittest.TestSuite()
         suite_module = []
-
         discover = unittest.defaultTestLoader.discover(self.caseRoot, pattern=self.caseTest, top_level_dir=None)
-
         suite_module.append(discover)
-
         if len(suite_module) > 0:
             for suite in suite_module:
                 for test_name in suite:
-                    test_suite.append(test_name)
+                    test_suite.addTest(test_name)
         else:
-            return None
+            return "没有找到执行文件"
+
+        return test_suite
 
     def run(self):
         """
@@ -42,8 +41,10 @@ class RunTest:
         """
         try:
             suit = self.set_case_suite()
+            print(suit)
             if suit is not None:
                 #  logger.info("********** TEST START ***********")
+                print(resultPath)
                 fp = open(resultPath, 'wb')
                 runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
                 runner.run(suit)

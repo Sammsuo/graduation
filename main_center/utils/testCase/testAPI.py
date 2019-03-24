@@ -5,21 +5,18 @@ from main_center.utils import readConfig
 from main_center.utils import configHttp
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
 import json
-API_list = common.get_file()
+
+API_list = common.get_xlsx_sheets(common.get_file())
 localReadConfig = readConfig.ReadConfig()
 
 localConfigHttp = configHttp.configHttp()
-flag = common.get_flag()
 
 
 @paramunittest.parametrized(*API_list)
-class TimeShare(unittest.TestCase):
-    def __init__(self):
-        self.flag = common
-
-    def setParameters(self, case_name, url, method, headers, params, code, msg):
+class APITest(unittest.TestCase):
+    def setParameters(self, case_name, url, method, headers, params, code, msg, depend, depend_bool):
         """
-        set Params
+        set params
         :param case_name:
         :param url:
         :param method:
@@ -27,6 +24,8 @@ class TimeShare(unittest.TestCase):
         :param params:
         :param code:
         :param msg:
+        :param depend:
+        :param depend_bool:
         :return:
         """
         self.case_name = str(case_name)
@@ -36,6 +35,8 @@ class TimeShare(unittest.TestCase):
         self.params = params
         self.code = str(code)
         self.msg = str(msg)
+        self.depend = depend
+        self.depend_bool = depend_bool
         self.return_json = None
         self.info = None
 
@@ -48,7 +49,7 @@ class TimeShare(unittest.TestCase):
         # self.log.build_start_line(self.case_name)
         print("---接口用例" + self.case_name + "测试开始前准备---")
 
-    def testTimeShare(self):
+    def testAPI(self):
         """
         test body
         :return:
@@ -105,9 +106,9 @@ class TimeShare(unittest.TestCase):
 
             self.info = self.return_json.json()
 
-            self.logger.info("URL：\n" + self.return_json.url)
-            self.logger.info(
-                "Request：\n" + json.dumps(localConfigHttp.params, ensure_ascii=False, sort_keys=True, indent=4))
+            # self.logger.info("URL：\n" + self.return_json.url)
+            # self.logger.info(
+            #     "Request：\n" + json.dumps(localConfigHttp.params, ensure_ascii=False, sort_keys=True, indent=4))
 
             # show return message
             common.show_return_msg(self.return_json)
@@ -119,6 +120,7 @@ class TimeShare(unittest.TestCase):
 
         except Exception as ex:
             # insert bug    repr(e)
+            print(ex)
             print("弄上去禅道" + '\n' + '\n')
 
             '''insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
@@ -137,3 +139,9 @@ class TimeShare(unittest.TestCase):
         #     self.log.build_end_line(self.case_name)
             print("\n第五步：检查结果:\t测试通过\t" + self.info['code'] + "\t" + self.info['msg'])
             print('\n' + '\n')
+
+
+if __name__ == '__main__':
+    print('lalalala', API_list)
+
+    unittest.main(verbosity=2)

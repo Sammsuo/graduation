@@ -6,30 +6,12 @@ import json
 from datetime import datetime
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
-resultPath = os.path.join(proDir,'result')
+resultPath = os.path.join(proDir, 'result')
+if not os.path.exists(resultPath):
+    os.mkdir(resultPath)
 reportPath = os.path.join(resultPath, str(datetime.now().strftime("%Y%m%d%H%M%S")))
-
-def get_xlsx_sheeet(excel_name):
-    """
-    get excel file data
-    :param excel_name:
-    :return:
-    """
-    cls = []
-    # 获取excel的文件路径
-    excel_path = os.path.join(proDir, 'excel_case', excel_name)
-    # 打开excel文件
-    file = xlrd.open_workbook(excel_path)
-    # 获取sheet页
-    sheets = file.sheets()
-    # 遍历获取用例
-    for sheet in sheets:
-        nrows = sheet.nrows
-        for i in range(nrows):
-            if sheet.row_values(i)[0] != u'case_name':
-                cls.append(sheet.row_values(i))
-
-    return cls
+if not os.path.exists(reportPath):
+    os.mkdir(reportPath)
 
 
 def check_url(url):
@@ -75,14 +57,47 @@ def save_file():
 
 def get_file():
     """
-    获取文件
+    获取excel文件
     :return:
     """
-    pass
+    path = os.path.join(proDir, 'testFile')
+    dirs = os.listdir(path)
+    f = []
+    for i in dirs:
+        if i.endswith(".xlsx"):
+            f.append(i)
+    return f[0]
+
+
+def get_xlsx_sheets(xlsx_name):
+    cls = []
+    # get xls file's path
+    xls_path = os.path.join(proDir, "testFile", xlsx_name)
+    # print (xls_path)
+
+    # open xls file
+    file = xlrd.open_workbook(xls_path)
+
+    sheets = file.sheets()
+
+    for sheet in sheets:
+        nrows = sheet.nrows
+        for i in range(nrows):
+            if sheet.row_values(i)[0] != u'case_name':
+                cls.append(sheet.row_values(i))
+    return cls
+
 
 def delete_file():
     """
     删除文件
+    :return:
+    """
+    pass
+
+def download_file():
+    """
+    下载excel文件
     :return:
     """
 
@@ -90,3 +105,4 @@ if __name__ == '__main__':
     #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
     print(proDir)
     print(resultPath)
+    get_file()

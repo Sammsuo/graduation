@@ -28,8 +28,9 @@ class Email:
         # 获取接收者名单
         self.value = localReadConfig.get_email('receiver')  # TODO
         self.receiver = []
-        for n in str(self.receiver).split(';'):
+        for n in str(self.value).split(';'):
             self.receiver.append(n)
+        print(self.receiver)
 
         date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # 将时间返回str
 
@@ -53,7 +54,7 @@ class Email:
         定义 邮件 内容
         :return:
         """
-        f = open(os.path.join(readConfig.proDir, 'testFile', 'emailStyle.txt')) # 设置邮件模板
+        f = open(os.path.join(readConfig.proDir, 'testFile', 'emailStyle.txt'))  # 设置邮件模板
         content = f.read()
         f.close
         content_plain = MIMEText(content, 'html', 'UTF-8')
@@ -72,14 +73,17 @@ class Email:
         :return:
         """
         if self.check_file():
-
+            print('进来了')
             resultpath = common.get_result_path()
+            print(resultpath)
             zippath = os.path.join(readConfig.proDir, 'result', 'test.zip')
-
+            print(zippath)
             # zip file
-            files = glob.glob(resultpath + '\*')  # TODO
+            files = glob.glob(resultpath + '/*')  # TODO
+            print('files', files)
             f = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED)
             for file in files:
+                print('file', file)
                 #修改压缩文件的目录结构
                 f.write(file, '/report/' + os.path.basename(file))
             f.close()
@@ -97,8 +101,10 @@ class Email:
         """
         reportpath = common.get_report_path()
         if os.path.isfile(reportpath) and not os.stat(reportpath) == 0:  # 检查testCase内是否有
+            print('TRUE')
             return True
         else:
+            print('False')
             return False
 
 
@@ -139,4 +145,5 @@ class MyEmail:
 
 if __name__ == '__main__':
     c = MyEmail.get_email()
+    c.send_email()
     print(c.msg)
