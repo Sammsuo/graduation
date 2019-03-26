@@ -2,6 +2,8 @@ import os
 import unittest
 from main_center.utils import readConfig
 from main_center.utils import HTMLTestRunner
+from main_center.utils import HTMLTestRunner_cn
+from main_center.utils import HTMLTestRunnerCN
 from main_center.utils import configEmail
 from main_center.utils import common
 
@@ -47,6 +49,8 @@ class RunTest:
                 print(resultPath)
                 fp = open(resultPath, 'wb')
                 runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
+                # runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
+                # runner = HTMLTestRunner_cn.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
                 runner.run(suit)
             else:
                 print('Have no case to test.')
