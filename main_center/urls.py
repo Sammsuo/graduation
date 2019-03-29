@@ -6,5 +6,6 @@ urlpatterns = {
     path('APItest/test', views.testUp),
     path('APItest/runTest', views.run_api_test),
     path('APItest/delete_file_by_name', views.handle_remove),
+    path('Case/buildData', views.build_case),
     path('Case/download', views.download_case)
 }

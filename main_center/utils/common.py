@@ -120,7 +120,10 @@ def download_file(lists, flag):
     # print(req.data) # 获取data属性(传一个列表)
     get_list = lists
     download_path = os.path.join(proDir, 'download_template', choose_temp(flag))
-    finish_path = os.path.join(proDir, 'download_template', 'Func_case.xlsx')
+    if flag == '1':
+        finish_path = os.path.join(proDir, 'download_template', 'Func_case.xlsx')
+    elif flag == '2':
+        finish_path = os.path.join(proDir, 'download_template', 'API_case.xlsx')
     # print(download_path)
     wb = openpyxl.load_workbook(download_path)
     table = wb['Sheet1']

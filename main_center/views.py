@@ -64,29 +64,49 @@ def run_check_ddl(req):
     pass
 
 
-def download_case(req):
+def build_case(req):
     """
     获取请求中的用例列表，然后获取模板，写进模板，保存下载
     用 openpyxl
     :param req:
     :return:
     """
-    # if req.method == 'post' or 'POST':
-        # print(req.body)
-    # print(json.loads(req.body)['list'])
-    # d_list = json.loads(req.body)['list']
-    # flag = json.loads(req.body)['flag']
-    # a = re.findall(re.compile(r"{.*?}"), d_list)
-    # b = []
-    # print(type(a))
-    # print(json.loads(a[0]))
-    # for i in a:
-    #     k = json.loads(i)
-    #     del k['name']
-    #     b.append(list(k.values()))
-    # print(b)  # 传列表
-    # k = common.download_file(b, flag)
-    k = '/Users/sam/PycharmProjects/graduation/main_center/utils/download_template/Func_case.xlsx'
+    if req.method == 'post' or 'POST':
+        print(req.body)
+        print(json.loads(req.body)['list'])
+        d_list = json.loads(req.body)['list']
+        flag = json.loads(req.body)['flag']
+        a = re.findall(re.compile(r"{.*?}"), d_list)
+        b = []
+        print(type(a))
+        print(json.loads(a[0]))
+        for i in a:
+            k = json.loads(i)
+            del k['name']
+            b.append(list(k.values()))
+        print(b)  # 传列表
+        k = common.download_file(b, flag)
+        print(k)
+
+        # def file_iterator(file_name, chunk_size=512):
+        #     with open(file_name, 'rb') as f:
+        #         while True:
+        #             c = f.read(chunk_size)
+        #             if c:
+        #                 yield c
+        #             else:
+        #                 break
+        #
+        # res = StreamingHttpResponse(
+        #     file_iterator(k))  # r'D:\pycharm\graduation\main_center\utils\download_template\Func_case.xlsx'
+        # res['Content-Type'] = 'aaplication/octet.stream'
+        # res['Content-Dispositon'] = 'attachment;filename="API_case.xlsx"'
+        # # print('aaaaa')
+        # return res
+        return JsonResponse(_get_req_json_dic(k, 0, '成功'))
+
+
+def download_case(req):
     def file_iterator(file_name, chunk_size=512):
         with open(file_name, 'rb') as f:
             while True:
@@ -96,9 +116,13 @@ def download_case(req):
                 else:
                     break
 
-    res = StreamingHttpResponse(file_iterator(k))
-    res['Content-Type'] = 'aaplication/vnd.ms-excel'
-    res['Content-Dispositon'] = 'attachment;filename="Func_case.xlsx"'
+    flag = json.loads(req.body)['flag']
+    if flag == '1':
+        res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\download_template\Func_case.xlsx'))
+    if flag == '2':
+        res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\download_template\API_case.xlsx'))
+    res['Content-Type'] = 'aaplication/octet.stream'
+    res['Content-Dispositon'] = 'attachment;'
     # print('aaaaa')
     return res
     # else:
