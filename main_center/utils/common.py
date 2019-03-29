@@ -93,6 +93,7 @@ def delete_file():
             os.remove(os.path.join(delete_path, i))
     return '删除完毕'
 
+
 def delete_file_by_name(name):
     """
     通过文件名删除文件
@@ -108,15 +109,51 @@ def delete_file_by_name(name):
         else:
             return False
 
-def download_file():
+# ----------------------------------------------------------
+
+
+def download_file(lists, flag):
     """
     下载excel文件
     :return:
     """
+    # print(req.data) # 获取data属性(传一个列表)
+    get_list = lists
+    download_path = os.path.join(proDir, 'download_template', choose_temp(flag))
+    finish_path = os.path.join(proDir, 'download_template', 'Func_case.xlsx')
+    # print(download_path)
+    wb = openpyxl.load_workbook(download_path)
+    table = wb['Sheet1']
+    # 顺序填写，序号，名字，前置，步骤，预期，备注
+    row = 2
+    column = 2
+    num = 1
+    for case_list in lists:
+        if case_list is not None:
+            for case_parm in case_list:
+                table.cell(row=row, column=1).value = num
+                table.cell(row=row, column=column).value = case_parm
+                column += 1
+            row += 1
+            column = 2
+            num += 1
+    wb.save(finish_path)
+    return finish_path
+
+def choose_temp(flag):
+    """
+    选择模板
+    :param flag:
+    :return:
+    """
+    if flag == '1':
+        return 'func_template_01.xlsx'
+    elif flag == '2':
+        return 'api_template_02.xlsx'
+
 
 if __name__ == '__main__':
     #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
     print(proDir)
     print(resultPath)
-    get_file()
-    delete_file()
+    download_file('2')
