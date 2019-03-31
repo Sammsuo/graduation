@@ -46,8 +46,6 @@ def get_result_path():
     """
     return reportPath
 
-
-
 def get_file():
     """
     获取excel文件
@@ -94,13 +92,13 @@ def delete_file():
     return '删除完毕'
 
 
-def delete_file_by_name(name):
+def delete_file_by_name(name, path):
     """
     通过文件名删除文件
     :param name:
     :return:
     """
-    delete_path = os.path.join(proDir, 'testFile')
+    delete_path = os.path.join(proDir, path)
     dirs = os.listdir(delete_path)
     for i in dirs:
         if i == name:
@@ -131,7 +129,7 @@ def download_file(lists, flag):
     row = 2
     column = 2
     num = 1
-    for case_list in lists:
+    for case_list in get_list:
         if case_list is not None:
             for case_parm in case_list:
                 table.cell(row=row, column=1).value = num
@@ -154,9 +152,9 @@ def choose_temp(flag):
     elif flag == '2':
         return 'api_template_02.xlsx'
 
-
+def download_ddl_temp():
+    pass
 if __name__ == '__main__':
     #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
     print(proDir)
     print(resultPath)
-    download_file('2')

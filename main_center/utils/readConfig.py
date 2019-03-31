@@ -48,6 +48,14 @@ class ReadConfig:
         value = self.cf.get("URL", name)
         return value
 
+    def get_path(self, name):
+        value = self.cf.get("PATH", name)
+        return value
+
+    def set_path(self, name, value):
+        self.cf.set('PATH', name, value)
+        with open(configPath, 'w+') as f:
+            self.cf.write(f)
 
 
 if __name__ == '__main__':

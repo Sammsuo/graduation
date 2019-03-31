@@ -1,8 +1,6 @@
-from django.shortcuts import render, HttpResponse
 from django.http import StreamingHttpResponse
 import os
 import requests
-import request
 import json
 from django.http import JsonResponse
 from django.core.files.storage import default_storage
@@ -11,8 +9,10 @@ from django.conf import settings
 from main_center.utils import RunTest
 from main_center.utils import common
 import re
-import xlrd
-import openpyxl
+from main_center.utils.checkDB import cut_sql
+from main_center.utils import readConfig
+
+localReadconfig = readConfig.ReadConfig()
 
 # Create your views here.
 
@@ -87,22 +87,6 @@ def build_case(req):
         print(b)  # 传列表
         k = common.download_file(b, flag)
         print(k)
-
-        # def file_iterator(file_name, chunk_size=512):
-        #     with open(file_name, 'rb') as f:
-        #         while True:
-        #             c = f.read(chunk_size)
-        #             if c:
-        #                 yield c
-        #             else:
-        #                 break
-        #
-        # res = StreamingHttpResponse(
-        #     file_iterator(k))  # r'D:\pycharm\graduation\main_center\utils\download_template\Func_case.xlsx'
-        # res['Content-Type'] = 'aaplication/octet.stream'
-        # res['Content-Dispositon'] = 'attachment;filename="API_case.xlsx"'
-        # # print('aaaaa')
-        # return res
         return JsonResponse(_get_req_json_dic(k, 0, '成功'))
 
 
@@ -121,6 +105,8 @@ def download_case(req):
         res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\download_template\Func_case.xlsx'))
     if flag == '2':
         res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\download_template\API_case.xlsx'))
+    if flag == '3':
+        res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\checkDB\DDL_file\Template-DDL.sql'))
     res['Content-Type'] = 'aaplication/octet.stream'
     res['Content-Dispositon'] = 'attachment;'
     # print('aaaaa')
@@ -133,32 +119,73 @@ def handle_remove(req):
     if req.method == 'post' or 'POST':
         print('进来啦')
         file = json.loads(req.body)
-        common.delete_file_by_name(file['name'])
+        common.delete_file_by_name(file['name'], file['path'])
         return JsonResponse(_get_req_json_dic('', 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
 def testUp(req):
-    if req.method == 'POST':
+    if req.method == 'POST' or 'post':
         # print("进来了")
         excel = req.FILES.get('file')
         excel_name = req.FILES.get('file').name
-        path = default_storage.save('/Users/sam/PycharmProjects/graduation/main_center/utils/testFile/' + excel_name, ContentFile(excel.read()))
+        path = default_storage.save('D:/pycharm/graduation/main_center/utils/testFile/' + excel_name, ContentFile(excel.read()))
         tmp_file = os.path.join(settings.MEDIA_ROOT, path)  # TODO
         return JsonResponse(_get_req_json_dic(""))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
+def save_DDL(req):
+    print('进来了')
+    DDL = req.FILES.get('file')
+    DDL_name = req.FILES.get('file').name
+    path = default_storage.save('D:/pycharm/graduation/main_center/utils/checkDB/DDL_file/' + DDL_name, ContentFile(DDL.read()))
+    tmp_file = os.path.join(settings.MEDIA_ROOT, path)
+    localReadconfig.set_path('ddl_path', path)
+    # print(r)
+    return JsonResponse(_get_req_json_dic('', 0, '成功'))
+
+
+def upload_DDL(req):
+    if req.method == 'get' or 'GET':
+        path = localReadconfig.get_path('ddl_path')
+        c = cut_sql.SQLCut()
+        sql_content = c.open_sql_file(path)
+        # print(sql_content)
+        return JsonResponse(_get_req_json_dic(sql_content, 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
+
+
+def resole_DDL(req):
+    if req.method == 'post' or 'POST':
+        sql = cut_sql.SQLCut()
+        sql_content = json.loads(req.body)['data']
+        # print(sql_content)
+        result = sql.resole_all(sql_content)
+        print('result:', result)
+        after_result = sql.change_show_style(result)
+        return JsonResponse(_get_req_json_dic(after_result, 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '成功'))
+
+
 def _get_req_json_dic(data, code=0, msg="success"):  # 封装返回信息
+    """
+    封装返回信息
+    :param data:
+    :param code:
+    :param msg:
+    :return:
+    """
     result_data = {
         "code": code,
         "msg": msg,
         "data": data
     }
     return result_data
-
 
 
 

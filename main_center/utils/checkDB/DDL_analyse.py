@@ -145,7 +145,6 @@ def sql_analyse(cut_columnone):
             return error_print
 
 
-
 # 对字段语句进行null分析
 def null_analyse(statement):
     """
@@ -244,31 +243,6 @@ def add_as_dict(column_list):
         value = get_type(statement.strip())
         dict[key] = value
     return dict
-
-
-# 获取相同字段的集合
-def get_dictkeys_set(dict1,dict2):
-    """
-    两个字典进行key与item比较，得出两个集合，若集合间有差集证明差集为同字段名不同类型字段
-    :param dict1:
-    :param dict2:
-    :return:
-    """
-    set_target = set()
-    target_key = reduce(lambda x, y: x & y, [dict1.keys(), dict2.keys()])
-    print(len(target_key))
-    target_items = reduce(lambda x, y: x & y, [dict1.items(), dict2.items()])
-    print(len(target_items))
-    for a in target_items:
-        set_target.add(a[0])
-
-    target = target_key - set_target
-    return target
-
-
-# 获取set然后对应的字典中对比键值
-def get_value_cmp(set):
-    pass
 
 
 def open_sql_file(path):

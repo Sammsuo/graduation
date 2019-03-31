@@ -106,9 +106,6 @@ class Ui_SQLtest(object):
         else:
             self.outputbox.insertPlainText('没找到相关的建表语句')  # 对第一个false进行判断
 
-
-
-
     def but2_get(self):
         self.outputbox.clear()
         sql_all = self.inputbox.toPlainText()
@@ -165,7 +162,7 @@ class Ui_SQLtest(object):
 
         # 对文件地址进行加工
         f_path = f_path_native.replace(' ', '').replace('\n', '')
-        #print(f_path)
+        # print(f_path)
 
         if f_path == '':
             self.outputbox.insertPlainText('没有输入')  # 判断输入框是否为空
