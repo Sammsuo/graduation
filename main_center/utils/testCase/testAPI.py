@@ -3,18 +3,20 @@ import paramunittest
 from main_center.utils import common
 from main_center.utils import readConfig
 from main_center.utils import configHttp
+from main_center.utils.configDB import MyDB
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
 import json
+import datetime
 
 API_list = common.get_xlsx_sheets(common.get_file())
 localReadConfig = readConfig.ReadConfig()
 
 localConfigHttp = configHttp.configHttp()
-
+localDB = MyDB()
 
 @paramunittest.parametrized(*API_list)
 class APITest(unittest.TestCase):
-    def setParameters(self, case_name, url, method, headers, params, code, msg, depend, depend_bool):
+    def setParameters(self, case_name, url, method, headers, params, code, msg):
         """
         set params
         :param case_name:
@@ -24,8 +26,6 @@ class APITest(unittest.TestCase):
         :param params:
         :param code:
         :param msg:
-        :param depend:
-        :param depend_bool:
         :return:
         """
         self.case_name = str(case_name)
@@ -35,8 +35,6 @@ class APITest(unittest.TestCase):
         self.params = params
         self.code = str(code)
         self.msg = str(msg)
-        self.depend = depend
-        self.depend_bool = depend_bool
         self.return_json = None
         self.info = None
 
@@ -123,17 +121,17 @@ class APITest(unittest.TestCase):
             print(ex)
             print("弄上去禅道" + '\n' + '\n')
 
-            '''insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
+            insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
                              '请求报文：<br/>' + json.dumps(
-                configHttp.params) + '<br/><br/>' + '报错信息：<br/>' + r'<span style="color:red"><b>' + repr(
+                localConfigHttp.params) + '<br/><br/>' + '报错信息：<br/>' + r'<span style="color:red"><b>' + repr(
                 ex) + '</b></span><br/><br/>' + '返回报文：<br/>' + json.dumps(self.return_json.json()),
                              datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                              datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
-            MyDB().insert_zt_bug(*insert_params)
+            localDB.insert_zt_bug(*insert_params)
 
-            self.logger.exception(ex)
-            raise AssertionError(repr(ex))
-        '''
+            # self.logger.exception(ex)
+            # raise AssertionError(repr(ex))
+
         else:
         #     self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
         #     self.log.build_end_line(self.case_name)
@@ -142,6 +140,4 @@ class APITest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    print('lalalala', API_list)
-
     unittest.main(verbosity=2)

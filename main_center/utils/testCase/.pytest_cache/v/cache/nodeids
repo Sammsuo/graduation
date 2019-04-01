@@ -21,8 +21,5 @@
   "testAPI.py::APITest_19::testAPI",
   "testAPI.py::APITest_20::testAPI",
   "testAPI.py::APITest_21::testAPI",
-  "testAPI.py::APITest_22::testAPI",
-  "testAPI.py::APITest_23::testAPI",
-  "testAPI.py::APITest_24::testAPI",
-  "testAPI.py::APITest_25::testAPI"
+  "testAPI.py::APITest_22::testAPI"
 ]

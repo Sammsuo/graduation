@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page>
+    <database name="zentao">
+        <table name="zt_bug">
+            <sql id="insert_bug">
+                INSERT INTO `zt_bug`(`product`, `branch`, `module`, `project`, `plan`, `story`, `storyVersion`, `task`,
+                `toTask`, `toStory`, `title`, `keywords`, `severity`, `pri`, `type`, `os`, `browser`, `hardware`,
+                `found`, `steps`, `status`, `color`, `confirmed`, `activatedCount`, `activatedDate`, `mailto`, `openedBy`, `openedDate`,
+                `openedBuild`, `assignedTo`, `assignedDate`, `deadline`, `resolvedBy`, `resolution`, `resolvedBuild`,
+                `resolvedDate`, `closedBy`, `closedDate`, `duplicateBug`, `linkBug`, `case`, `caseVersion`, `result`,
+                `testtask`, `lastEditedBy`, `lastEditedDate`, `deleted`) VALUES (1, 0, 1, 0, 0, 0, 1, 0, 0, 0, %s, '',
+                2, 1, 'codeerror', '', '', '', '', %s, 'active', '', 0, 0, '0001-01-01 01:01:01', ',admin', 'admin', %s, 'trunk', 'admin', %s,
+                '0001-01-01', '', '', '', '0001-01-01 01:01:01', '', '0001-01-01 01:01:01', 0, '', 0, 0, 0, 0, '', '0001-01-01 01:01:01', '0');
+            </sql>
+        </table>
+    </database>
+</page>

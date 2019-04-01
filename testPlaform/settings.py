@@ -95,6 +95,14 @@ DATABASES = {
         'PASSWORD': USER_PASSWORD,
         'HOST': DB_HOST,
         'PORT': '3306'
+    },
+    'zentao': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'zentao',
+        'USER': USER_NAME,
+        'PASSWORD': USER_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': '3306'
     }
 }
 

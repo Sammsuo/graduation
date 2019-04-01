@@ -4,6 +4,7 @@ import openpyxl
 import re
 import json
 from datetime import datetime
+from xml.etree import ElementTree as ElementTree
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
 resultPath = os.path.join(proDir, 'result')
@@ -152,9 +153,66 @@ def choose_temp(flag):
     elif flag == '2':
         return 'api_template_02.xlsx'
 
-def download_ddl_temp():
-    pass
+
+# ########################### 读数据库xml ##############################
+database = {}
+
+
+def set_xml():
+    """
+    set sql xml
+    :return:
+    """
+    if len(database) == 0:
+        sql_path = os.path.join(proDir, "testFile", "SQL.xml")
+        tree = ElementTree.parse(sql_path)
+        for db in tree.findall("database"):
+            db_name = db.get("name")
+            # print(db_name)
+            table = {}
+            for tb in db.getchildren():
+                table_name = tb.get("name")
+                # print(table_name)
+                sql = {}
+                for data in tb.getchildren():
+                    sql_id = data.get("id")
+                    # print(sql_id)
+                    sql[sql_id] = data.text
+                    # print(sql)
+                table[table_name] = sql
+            database[db_name] = table
+
+
+def get_xml_dict(database_name, table_name):
+    """
+    get db dict by given name
+    :param database_name:
+    :param table_name:
+    :return:
+    """
+    set_xml()
+    database_dict = database.get(database_name).get(table_name)
+    # print("-----------------------------------------------")
+    # print(database_dict)
+    # print("-----------------------------------------------")
+    return database_dict
+
+
+def get_sql(database_name, table_name, sql_id):
+    """
+    get sql by given name and sql_id
+    :param database_name:
+    :param table_name:
+    :param sql_id:
+    :return:
+    """
+
+    db = get_xml_dict(database_name, table_name)
+    sql = db.get(sql_id)
+    return sql
+
 if __name__ == '__main__':
     #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
     print(proDir)
     print(resultPath)
+    print(proDir)

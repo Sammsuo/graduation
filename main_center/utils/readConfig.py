@@ -48,6 +48,10 @@ class ReadConfig:
         value = self.cf.get("URL", name)
         return value
 
+    def get_db(self, name):
+        value = self.cf.get("DATABASE", name)
+        return value
+
     def get_path(self, name):
         value = self.cf.get("PATH", name)
         return value
