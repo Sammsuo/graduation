@@ -171,6 +171,11 @@ def resole_DDL(req):
     else:
         return JsonResponse(_get_req_json_dic('', -1, '成功'))
 
+def upload_case_to_zt(req):
+    if req.method == 'post' or 'POST':
+        return JsonResponse(_get_req_json_dic('', 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 def _get_req_json_dic(data, code=0, msg="success"):  # 封装返回信息
     """

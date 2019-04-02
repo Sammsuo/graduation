@@ -13,5 +13,27 @@
                 '0001-01-01', '', '', '', '0001-01-01 01:01:01', '', '0001-01-01 01:01:01', 0, '', 0, 0, 0, 0, '', '0001-01-01 01:01:01', '0');
             </sql>
         </table>
+
+        <table name="zt_case">
+            <sql id="insert_case"> -- module  标题  前置  创建时间
+                INSERT INTO `zt_case`(`product`, `branch`, `lib`, `module`, `path`, `story`, `storyVersion`, `title`,
+                `precondition`, `keywords`, `pri`, `type`, `stage`, `howRun`, `scriptedBy`, `scriptedDate`, `scriptStatus`,
+                `scriptLocation`, `status`, `color`, `frequency`, `order`, `openedBy`, `openedDate`, `reviewedBy`, `reviewedDate`,
+                `lastEditedBy`, `lastEditedDate`, `version`, `linkCase`, `fromBug`, `fromCaseID`, `deleted`, `lastRunner`,
+                `lastRunDate`, `lastRunResult`) VALUES (1, 0, 0, %s, 0, 0, 1, %s, %s,
+                '', 1, 'interface', '', '', '', '0000-00-00', '', '', 'normal', '', '1', 0, 'admin',
+                %s, '', '0000-00-00', '', '0000-00-00 00:00:00', 1, '', 0, 0, '0', '', '0000-00-00 00:00:00', '');
+            </sql>
+            <sql id="get_id_by_openedDate">
+                select id from zt_case order by openedDate desc limit 1;
+            </sql>
+        </table>
+
+        <table name="zt_casestep">
+            <sql id="insert_case_step"> -- case表id   步骤  预期结果
+                INSERT INTO `zt_casestep`(`parent`, `case`, `version`, `type`, `desc`, `expect`) VALUES
+                (0, 1, %s, 'step', %s, %s);
+            </sql>
+        </table>
     </database>
 </page>
