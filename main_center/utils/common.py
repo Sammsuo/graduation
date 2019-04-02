@@ -7,13 +7,6 @@ from datetime import datetime
 from xml.etree import ElementTree as ElementTree
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
-resultPath = os.path.join(proDir, 'result')
-if not os.path.exists(resultPath):
-    os.mkdir(resultPath)
-reportPath = os.path.join(resultPath, str(datetime.now().strftime("%Y%m%d%H%M%S")))
-if not os.path.exists(reportPath):
-    os.mkdir(reportPath)
-
 
 def check_url(url):
     check_rule_r = r'(https?:.*?:.*?/)'
@@ -31,21 +24,21 @@ def show_return_msg(response):
     print("\n请求返回值: " + '\n' + json.dumps(json.loads(msg), ensure_ascii=False, sort_keys=True, indent=4))
 
 
-def get_report_path():
-    """
-    获取报告文件路径
-    :return:
-    """
-    report_path = os.path.join(reportPath, 'report.html')
-    return report_path
-
-
-def get_result_path():
-    """
-    获取报告结果路径
-    :return:
-    """
-    return reportPath
+# def get_report_path():
+#     """
+#     获取报告文件路径
+#     :return:
+#     """
+#     report_path = os.path.join(reportPath, 'report.html')
+#     return report_path
+#
+#
+# def get_result_path():
+#     """
+#     获取报告结果路径
+#     :return:
+#     """
+#     return reportPath
 
 def get_file():
     """
@@ -64,6 +57,7 @@ def get_file():
 def get_xlsx_sheets(xlsx_name):
     cls = []
     # get xls file's path
+    print('llalala:', xlsx_name)
     xls_path = os.path.join(proDir, "testFile", xlsx_name)
     # print (xls_path)
 
@@ -168,17 +162,13 @@ def set_xml():
         tree = ElementTree.parse(sql_path)
         for db in tree.findall("database"):
             db_name = db.get("name")
-            # print(db_name)
             table = {}
             for tb in db.getchildren():
                 table_name = tb.get("name")
-                # print(table_name)
                 sql = {}
                 for data in tb.getchildren():
                     sql_id = data.get("id")
-                    # print(sql_id)
                     sql[sql_id] = data.text
-                    # print(sql)
                 table[table_name] = sql
             database[db_name] = table
 
@@ -192,9 +182,6 @@ def get_xml_dict(database_name, table_name):
     """
     set_xml()
     database_dict = database.get(database_name).get(table_name)
-    # print("-----------------------------------------------")
-    # print(database_dict)
-    # print("-----------------------------------------------")
     return database_dict
 
 
@@ -211,8 +198,27 @@ def get_sql(database_name, table_name, sql_id):
     sql = db.get(sql_id)
     return sql
 
+
+def changge_check_params(str):
+    """
+    change excel's check_param (str) to be list, return dic
+    :param str:
+    :return:
+    """
+    key_value_list = str.split(';')
+    # print(key_value_list)
+    dic = {}
+    for i in key_value_list:
+        change_list = i.split('=')
+        change_list = list(map(lambda x: x.strip(), change_list))
+        # print(change_list)
+        dic[change_list[0]] = change_list[1]
+    return dic
+
+
 if __name__ == '__main__':
     #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
-    print(proDir)
-    print(resultPath)
+    c = changge_check_params("code = '00000000';msg='成功'")
+    print(type(c['code']))
+    print(type(c['msg']))
     print(proDir)

@@ -5,6 +5,7 @@ from main_center.utils import readConfig
 from main_center.utils import configHttp
 from main_center.utils.configDB import MyDB
 # from utils.customer_utils import customerConfigHttp as ConfigHttp
+from main_center.utils import Log
 import json
 import datetime
 
@@ -16,7 +17,7 @@ localDB = MyDB()
 
 @paramunittest.parametrized(*API_list)
 class APITest(unittest.TestCase):
-    def setParameters(self, case_name, url, method, headers, params, code, msg):
+    def setParameters(self, case_name, url, method, headers, params, check_param):
         """
         set params
         :param case_name:
@@ -26,6 +27,7 @@ class APITest(unittest.TestCase):
         :param params:
         :param code:
         :param msg:
+        :param check_param:
         :return:
         """
         self.case_name = str(case_name)
@@ -33,8 +35,7 @@ class APITest(unittest.TestCase):
         self.method = str(method)
         self.headers = headers
         self.params = params
-        self.code = str(code)
-        self.msg = str(msg)
+        self.check_param = str(check_param)
         self.return_json = None
         self.info = None
 
@@ -42,9 +43,9 @@ class APITest(unittest.TestCase):
         """
         :return:
         """
-        # self.log = Log.MyLog.get_log()
-        # self.logger = self.log.get_logger()
-        # self.log.build_start_line(self.case_name)
+        self.log = Log.MyLog.get_log()
+        self.logger = self.log.get_logger()
+        self.log.build_start_line(self.case_name)
         print("---接口用例" + self.case_name + "测试开始前准备---")
 
     def testAPI(self):
@@ -104,16 +105,17 @@ class APITest(unittest.TestCase):
 
             self.info = self.return_json.json()
 
-            # self.logger.info("URL：\n" + self.return_json.url)
-            # self.logger.info(
-            #     "Request：\n" + json.dumps(localConfigHttp.params, ensure_ascii=False, sort_keys=True, indent=4))
+            self.logger.info("URL：\n" + self.return_json.url)
+            self.logger.info(
+                "Request：\n" + json.dumps(localConfigHttp.params, ensure_ascii=False, sort_keys=True, indent=4))
 
             # show return message
             common.show_return_msg(self.return_json)
 
-            self.assertEqual(self.info['code'], self.code)
-            self.assertEqual(self.info['msg'], self.msg)
-
+            check_dic = common.changge_check_params(self.check_param)
+            for key in check_dic:
+                print(str(self.info[key]))
+                self.assertEqual(str(self.info[key]), check_dic[key])
             # DB check
 
         except Exception as ex:
@@ -121,21 +123,21 @@ class APITest(unittest.TestCase):
             print(ex)
             print("弄上去禅道" + '\n' + '\n')
 
-            insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
-                             '请求报文：<br/>' + json.dumps(
-                localConfigHttp.params) + '<br/><br/>' + '报错信息：<br/>' + r'<span style="color:red"><b>' + repr(
-                ex) + '</b></span><br/><br/>' + '返回报文：<br/>' + json.dumps(self.return_json.json()),
-                             datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                             datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
-            localDB.insert_zt_bug(*insert_params)
-
+            # insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
+            #                  '请求报文：<br/>' + json.dumps(
+            #     localConfigHttp.params) + '<br/><br/>' + '报错信息：<br/>' + r'<span style="color:red"><b>' + repr(
+            #     ex) + '</b></span><br/><br/>' + '返回报文：<br/>' + json.dumps(self.return_json.json()),
+            #                  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            #                  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
+            # localDB.insert_zt_bug(*insert_params)
+            #
             # self.logger.exception(ex)
             # raise AssertionError(repr(ex))
 
         else:
-        #     self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
-        #     self.log.build_end_line(self.case_name)
-            print("\n第五步：检查结果:\t测试通过\t" + self.info['code'] + "\t" + self.info['msg'])
+            self.log.build_case_line(self.case_name, self.check_param)
+            self.log.build_end_line(self.case_name)
+            print("\n第五步：检查结果:\t测试通过\t" + self.check_param)
             print('\n' + '\n')
 
 
