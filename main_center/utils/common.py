@@ -5,8 +5,11 @@ import re
 import json
 from datetime import datetime
 from xml.etree import ElementTree as ElementTree
+import datetime
+from main_center.utils import configDB
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
+localDB = configDB.MyDB()
 
 def check_url(url):
     check_rule_r = r'(https?:.*?:.*?/)'
@@ -214,6 +217,35 @@ def changge_check_params(str):
         # print(change_list)
         dic[change_list[0]] = change_list[1]
     return dic
+
+
+def change_params_style(params_list, module):
+    try:
+        if module == '4':
+            res_list = []
+            for i in params_list:
+                set_dict = {}
+                set_dict['case_title'] = i['name'] + ': ' + i['CaseName']
+                set_dict['case_condition'] = '前置条件: ' + i['CaseCondition'] + '  备注: ' + i['CaseRemark']
+                set_dict['module'] = module
+                set_dict['case_step'] = i['CaseStep']
+                set_dict['case_expect'] = i['CseExpect']
+                res_list.append(set_dict)
+            return res_list
+        elif module == '3':
+            pass
+    except Exception as e:
+        return e
+
+
+def execute_upload(upload_list):
+    if type(upload_list) == list:
+        for case in upload_list:
+            insert_case_params = [case['module'], case['case_title'], case['case_condition'], datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
+            localDB.insert_zt_case(*insert_case_params)
+            case_id = localDB.select_id_by_openedDate()
+            insert_case_step_param = [case_id, case['case_step'], case['case_expect']]
+            localDB.insert_zt_casestep(*insert_case_step_param)
 
 
 if __name__ == '__main__':
