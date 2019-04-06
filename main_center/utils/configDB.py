@@ -5,6 +5,7 @@ import pymysql
 
 Log = Log.MyLog()
 
+
 class MyDB:
     def __init__(self):
         pro_config = readConfig.ReadConfig()
@@ -126,7 +127,37 @@ class MyDB:
         c = self.selectSQL_no_params(sql)[0][0]
         return c
 
+    def conut_bug_by_month(self):
+        sql = common.get_sql(database, 'zt_bug', 'count_bug_by_month')
+        a = self.executeSQL(sql)
+        c = self.get_all(a)
+        return c
+
+    def get_bug_style(self):
+        sql = common.get_sql(database, 'zt_bug', 'get_bug_style')
+        a = self.executeSQL(sql)
+        c = self.get_all(a)
+        return c
+
+    def get_bug_all(self):
+        sql = common.get_sql(database, 'zt_bug', 'get_bug_all')
+        a = self.executeSQL(sql)
+        c = self.get_one(a)
+        return c
+
+    def get_bug_up(self):
+        sql = common.get_sql(database, 'zt_bug', 'get_bug_up')
+        a = self.executeSQL(sql)
+        c = self.get_one(a)
+        return c
+
+    def get_bug_down(self):
+        sql = common.get_sql(database, 'zt_bug', 'get_bug_down')
+        a = self.executeSQL(sql)
+        c = self.get_one(a)
+        return c
 
 if __name__ == '__main__':
     a = MyDB()
     print(a.select_id_by_openedDate())
+    print(type(a.conut_bug_by_month()))

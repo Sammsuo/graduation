@@ -48,7 +48,10 @@ def _get_responese_json_dic(data, code=0, message='success'):
     return result_data
 
 
-def log_user_out(request):
-    auth.logout(request)
-    return JsonResponse(_get_responese_json_dic('', -1, u'请求无效'))
+@csrf_exempt
+def logging_out(request):
+    if request.method == 'get' or 'GET':
+        print('进来了')
+        auth.logout(request)
+        return JsonResponse(_get_responese_json_dic('', -1, u'请求无效'))
 

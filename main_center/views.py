@@ -177,10 +177,40 @@ def upload_case_to_zt(req):
         req_dict = json.loads(req.body)
         print(req_dict)
         print(type(req_dict))
-        upload_params = req.dict['list']
-        common.change_params_style(upload_params, req_dict['module'])
-        common.execute_upload()
+        upload_params = req_dict['list']
+        af_change_list = common.change_params_style(upload_params, req_dict['module'])
+        common.execute_upload(af_change_list)
         return JsonResponse(_get_req_json_dic('', 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
+
+
+def get_month_bug_num(req):
+    if req.method == 'get' or 'GET':
+        print('进来了')
+        a = common.get_line_data()
+        print(type(a))
+        return JsonResponse(_get_req_json_dic(a, 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
+
+
+def get_bug_style(req):
+    if req.method == 'get' or 'GET':
+        print('进来了')
+        a = common.get_bug_style()
+        print(a)
+        return JsonResponse(_get_req_json_dic(a, 0, '成功'))
+    else:
+        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
+
+
+def get_bug_module(req):
+    if req.method == 'get' or 'GET':
+        print('进来了')
+        a = common.get_bug_module()
+        print(a)
+        return JsonResponse(_get_req_json_dic(a, 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 

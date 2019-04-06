@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = {
-    path('getRequest/post/', views.choose_method),
+    path('getRequest/post', views.choose_method),
     path('APItest/test', views.testUp),
     path('APItest/runTest', views.run_api_test),
     path('APItest/delete_file_by_name', views.handle_remove),
@@ -12,4 +12,7 @@ urlpatterns = {
     path('DBcheck/upload', views.save_DDL),
     path('DBcheck/returnContent', views.upload_DDL),
     path('DBcheck/resole', views.resole_DDL),
+    path('charts/getMonthBugNum', views.get_month_bug_num),
+    path('charts/getBugStyle', views.get_bug_style),
+    path('card/setData', views.get_bug_module)
 }

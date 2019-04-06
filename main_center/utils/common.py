@@ -11,6 +11,7 @@ from main_center.utils import configDB
 proDir = os.path.split(os.path.realpath(__file__))[0]
 localDB = configDB.MyDB()
 
+
 def check_url(url):
     check_rule_r = r'(https?:.*?:.*?/)'
     check_rule_p = re.compile(check_rule_r)
@@ -225,20 +226,33 @@ def change_params_style(params_list, module):
             res_list = []
             for i in params_list:
                 set_dict = {}
-                set_dict['case_title'] = i['name'] + ': ' + i['CaseName']
+                set_dict['case_title'] = i['CaseName']
                 set_dict['case_condition'] = '前置条件: ' + i['CaseCondition'] + '  备注: ' + i['CaseRemark']
                 set_dict['module'] = module
                 set_dict['case_step'] = i['CaseStep']
-                set_dict['case_expect'] = i['CseExpect']
+                set_dict['case_expect'] = i['CaseExpect']
+                print(set_dict)
                 res_list.append(set_dict)
             return res_list
         elif module == '3':
-            pass
+            res_list = []
+            for i in params_list:
+                set_dict = {}
+                set_dict['case_title'] = i['CaseName']
+                set_dict['case_condition'] = 'URL: ' + i['CaseUrl'] + '  Method: ' + i['CaseMethod'] + ' Header: ' + i['CaseHeader']
+                set_dict['module'] = module
+                set_dict['case_step'] = i['CaseParams']
+                set_dict['case_expect'] = i['CaseResult']
+                print(set_dict)
+                res_list.append(set_dict)
+            return res_list
     except Exception as e:
         return e
 
 
 def execute_upload(upload_list):
+    print(upload_list)
+    print(type(upload_list))
     if type(upload_list) == list:
         for case in upload_list:
             insert_case_params = [case['module'], case['case_title'], case['case_condition'], datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
@@ -248,9 +262,42 @@ def execute_upload(upload_list):
             localDB.insert_zt_casestep(*insert_case_step_param)
 
 
+def get_line_data():
+    month_data = {'Jan': 0, 'Feb': 0, 'Mar': 0, 'Apr': 0, 'May': 0, 'June': 0, 'July': 0, 'Aug': 0, 'Sept': 0, 'Oct': 0, 'Nov': 0, 'Dec': 0}
+    month_tuple = localDB.conut_bug_by_month()
+    x = 0
+    for i in month_data:
+        if x < len(month_tuple):
+            month_data[i] = month_tuple[x][1]
+            x += 1
+    return month_data
+
+
+def get_bug_style():
+    style_dict = {'codeerror': 0, 'designdefect': 0, 'others': 0}
+    style_get_dict = localDB.get_bug_style()
+    for i in style_get_dict:
+        style_dict[i[0]] = i[1]
+
+    return style_dict
+
+
+def get_bug_module():
+    module_dict = {'all': 0, 'up': 0, 'down': 0}
+    all = localDB.get_bug_all()
+    up = localDB.get_bug_up()
+    down = localDB.get_bug_down()
+    module_dict['all'] = all[0]
+    module_dict['up'] = up[0]
+    module_dict['down'] = down[0]
+    print(all, up, down)
+    return module_dict
+
+
 if __name__ == '__main__':
-    #print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
-    c = changge_check_params("code = '00000000';msg='成功'")
-    print(type(c['code']))
-    print(type(c['msg']))
-    print(proDir)
+    # print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
+    # c = changge_check_params("code = '00000000';msg='成功'")
+    # print(type(c['code']))
+    # print(type(c['msg']))
+    # print(proDir)
+    get_line_data()

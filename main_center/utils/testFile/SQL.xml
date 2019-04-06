@@ -12,6 +12,31 @@
                 2, 1, 'codeerror', '', '', '', '', %s, 'active', '', 0, 0, '0001-01-01 01:01:01', ',admin', 'admin', %s, 'trunk', 'admin', %s,
                 '0001-01-01', '', '', '', '0001-01-01 01:01:01', '', '0001-01-01 01:01:01', 0, '', 0, 0, 0, 0, '', '0001-01-01 01:01:01', '0');
             </sql>
+
+            <sql id="count_bug_by_month">
+                select
+                month(openedDate) as 月,
+                count(*) as 数量
+                from zt_bug
+                group by year(openedDate), month(openedDate)
+                order by  month(openedDate)
+            </sql>
+
+            <sql id="get_bug_style">
+                select type, count(*) as 数量 from zt_bug group by type ;
+            </sql>
+
+            <sql id="get_bug_all">
+                select count(*) from zt_bug;
+            </sql>
+
+            <sql id="get_bug_up">
+                select count(*) as 数量 from zt_bug where module = '5'
+            </sql>
+
+            <sql id="get_bug_down">
+                select count(*) as 数量 from zt_bug where module != '5';
+            </sql>
         </table>
 
         <table name="zt_case">
@@ -21,8 +46,8 @@
                 `scriptLocation`, `status`, `color`, `frequency`, `order`, `openedBy`, `openedDate`, `reviewedBy`, `reviewedDate`,
                 `lastEditedBy`, `lastEditedDate`, `version`, `linkCase`, `fromBug`, `fromCaseID`, `deleted`, `lastRunner`,
                 `lastRunDate`, `lastRunResult`) VALUES (1, 0, 0, %s, 0, 0, 1, %s, %s,
-                '', 1, 'interface', '', '', '', '0000-00-00', '', '', 'normal', '', '1', 0, 'admin',
-                %s, '', '0000-00-00', '', '0000-00-00 00:00:00', 1, '', 0, 0, '0', '', '0000-00-00 00:00:00', '');
+                '', 1, 'interface', '', '', '', '0001-01-01', '', '', 'normal', '', '1', 0, 'admin',
+                %s, '', '0001-01-01', '', '0001-01-01 01:01:01', 1, '', 0, 0, '0', '', '0001-01-01 01:01:01', '');
             </sql>
             <sql id="get_id_by_openedDate">
                 select id from zt_case order by openedDate desc limit 1;
@@ -32,7 +57,7 @@
         <table name="zt_casestep">
             <sql id="insert_case_step"> -- case表id   步骤  预期结果
                 INSERT INTO `zt_casestep`(`parent`, `case`, `version`, `type`, `desc`, `expect`) VALUES
-                (0, 1, %s, 'step', %s, %s);
+                (0, %s, 1, 'step', %s, %s);
             </sql>
         </table>
     </database>
