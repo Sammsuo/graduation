@@ -16,6 +16,7 @@ localReadconfig = readConfig.ReadConfig()
 
 # Create your views here.
 
+
 def choose_method(req):
     # print(json.loads(req.body))
     params = json.loads(req.body)
@@ -132,7 +133,7 @@ def testUp(req):
         excel_name = req.FILES.get('file').name
         path = default_storage.save('D:/pycharm/graduation/main_center/utils/testFile/' + excel_name, ContentFile(excel.read()))
         tmp_file = os.path.join(settings.MEDIA_ROOT, path)  # TODO
-        return JsonResponse(_get_req_json_dic(""))
+        return JsonResponse(_get_req_json_dic("", 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
