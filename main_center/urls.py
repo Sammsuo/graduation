@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = {
     path('getRequest/post', views.choose_method),
-    path('APItest/test', views.testUp),
+    path('APItest/upload', views.save_excel),
     path('APItest/runTest', views.run_api_test),
     path('APItest/delete_file_by_name', views.handle_remove),
     path('Case/buildData', views.build_case),

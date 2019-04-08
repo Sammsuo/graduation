@@ -43,19 +43,21 @@ class RunTest:
         """
         try:
             suit = self.set_case_suite()
-            print(suit)
+            # print(suit)
             if suit is not None:
-                #  logger.info("********** TEST START ***********")
+                # logger.info("********** TEST START ***********")
                 print(resultPath)
                 fp = open(resultPath, 'wb')
                 runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
                 # runner = HTMLTestRunnerCN.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
                 # runner = HTMLTestRunner_cn.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
                 runner.run(suit)
+                return '完成'
             else:
-                print('Have no case to test.')
+                return '没有用例可测试'
         except Exception as ex:
             print(str(ex))
+            return ex
         finally:
             print('########  Test End ##########')
             fp.close()
