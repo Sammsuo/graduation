@@ -156,27 +156,28 @@ def save_excel(req):
             return JsonResponse(_get_req_json_dic("", 0, '成功'))
         except Exception as e:
             print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+            return JsonResponse(_get_req_json_dic('', -2, '接口异常'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
 def save_DDL(req):
-    if req.method == 'post' or 'POST':
+    # if req.method == 'post' or 'POST':
         print('进来了')
         try:
             DDL = req.FILES.get('file')
             DDL_name = req.FILES.get('file').name
-            path = default_storage.save('D:/pycharm/graduation/main_center/utils/checkDB/DDL_file/' + DDL_name, ContentFile(DDL.read()))
+            path = default_storage.save('/Users/sam/PycharmProjects/graduation/main_center/utils/checkDB/DDL_file/' + DDL_name, ContentFile(DDL.read()))
+            # D:/pycharm/graduation/main_center/utils/checkDB/DDL_file/
             tmp_file = os.path.join(settings.MEDIA_ROOT, path)
             localReadconfig.set_path('ddl_path', path)
             # print(r)
             return JsonResponse(_get_req_json_dic('', 0, '成功'))
         except Exception as e:
             print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
-    else:
-        return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
+            return JsonResponse(_get_req_json_dic('', -2, '接口异常'))
+    # else:
+    #     return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
 def upload_DDL(req):
@@ -189,7 +190,7 @@ def upload_DDL(req):
             return JsonResponse(_get_req_json_dic(sql_content, 0, '成功'))
         except Exception as e:
             print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+            return JsonResponse(_get_req_json_dic('', -2, '接口异常'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
@@ -206,7 +207,7 @@ def resole_DDL(req):
             return JsonResponse(_get_req_json_dic(after_result, 0, '成功'))
         except Exception as e:
             print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+            return JsonResponse(_get_req_json_dic('', -2, '接口异常'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '成功'))
 
@@ -223,49 +224,37 @@ def upload_case_to_zt(req):
             return JsonResponse(_get_req_json_dic('', 0, '成功'))
         except Exception as e:
             print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+            return JsonResponse(_get_req_json_dic('', -2, '接口异常'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
 def get_month_bug_num(req):
     if req.method == 'get' or 'GET':
-        try:
-            print('进来了')
-            a = common.get_line_data()
-            print(type(a))
-            return JsonResponse(_get_req_json_dic(a, 0, '成功'))
-        except Exception as e:
-            print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+        print('进来了')
+        a = common.get_line_data()
+        print(type(a))
+        return JsonResponse(_get_req_json_dic(a, 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
 def get_bug_style(req):
     if req.method == 'get' or 'GET':
-        try:
-            print('进来了')
-            a = common.get_bug_style()
-            print(a)
-            return JsonResponse(_get_req_json_dic(a, 0, '成功'))
-        except Exception as e:
-            print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+        print('进来了')
+        a = common.get_bug_style()
+        print(a)
+        return JsonResponse(_get_req_json_dic(a, 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
 def get_bug_module(req):
     if req.method == 'get' or 'GET':
-        try:
-            print('进来了')
-            a = common.get_bug_module()
-            print(a)
-            return JsonResponse(_get_req_json_dic(a, 0, '成功'))
-        except Exception as e:
-            print(e)
-            return JsonResponse(_get_req_json_dic(e, -2, '接口异常'))
+        print('进来了')
+        a = common.get_bug_module()
+        print(a)
+        return JsonResponse(_get_req_json_dic(a, 0, '成功'))
     else:
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 

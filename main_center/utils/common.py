@@ -287,6 +287,7 @@ def get_bug_module():
     all = localDB.get_bug_all()
     up = localDB.get_bug_up()
     down = localDB.get_bug_down()
+    localDB.closeDB()
     module_dict['all'] = all[0]
     module_dict['up'] = up[0]
     module_dict['down'] = down[0]
