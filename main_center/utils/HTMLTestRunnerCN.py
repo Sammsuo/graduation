@@ -704,9 +704,12 @@ class HTMLTestReportCN(Template_mixin):
             # subtotal for a class
             np = nf = ne = 0
             for n,t,o,e in cls_results:
-                if n == 0: np += 1
-                elif n == 1: nf += 1
-                else: ne += 1
+                if n == 0:
+                    np += 1
+                elif n == 1:
+                    nf += 1
+                else:
+                    ne += 1
 
             # format class description
             if cls.__module__ == "__main__":

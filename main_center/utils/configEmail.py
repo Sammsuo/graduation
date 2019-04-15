@@ -11,6 +11,7 @@ from main_center.utils import readConfig
 import zipfile
 import glob
 from main_center.utils import common
+from main_center.utils.Log import MyLog
 
 localReadConfig = readConfig.ReadConfig()
 
@@ -36,8 +37,8 @@ class Email:
 
         self.subject = title + '' + date
 
-        # self.log = MyLog.get_log()
-        # self.logger = self.log.get_logger()
+        self.log = MyLog.get_log()
+        self.logger = self.log.get_logger()
         self.msg = MIMEMultipart('related')  # 构造带附件的邮件
 
     def config_header(self):
@@ -74,7 +75,7 @@ class Email:
         """
         if self.check_file():
             print('进来了')
-            resultpath = common.get_result_path()
+            resultpath = self.log.get_result_path()
             print(resultpath)
             zippath = os.path.join(readConfig.proDir, 'result', 'test.zip')
             print(zippath)
@@ -99,7 +100,7 @@ class Email:
         检查测试报告
         :return:
         """
-        reportpath = common.get_report_path()
+        reportpath = self.log.get_report_path()
         if os.path.isfile(reportpath) and not os.stat(reportpath) == 0:  # 检查testCase内是否有
             print('TRUE')
             return True

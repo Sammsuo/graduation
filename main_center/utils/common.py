@@ -9,7 +9,7 @@ import datetime
 from main_center.utils import configDB
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
-localDB = configDB.MyDB()
+# localDB = configDB.MyDB()
 
 
 def check_url(url):
@@ -295,10 +295,35 @@ def get_bug_module():
     return module_dict
 
 
+def first_delete_all(flag):
+    """
+    用flag控制使用
+    :param flag:
+    :return:
+    """
+    file_path_dict = {
+        '1': '/Users/sam/PycharmProjects/graduation/main_center/utils/checkDB/DDL_file',  # DDL
+        '2': '/Users/sam/PycharmProjects/graduation/main_center/utils/testFile',
+        '3': ''
+    }
+    file_list = os.listdir(file_path_dict[flag])
+    for i in file_list:
+        print(i)
+        if i == '1':
+            if i != 'Template-DDL.sql':
+                pass
+        if i == '2':
+            if i != 'test_excel.xlsx' or '__pycache__' or 'emailStyle.txt' or '__init__.py' or 'SQL.xml':
+                pass
+
+
+
+
 if __name__ == '__main__':
     # print(check_url('http://47.107.21.127:9000/pld/credit/#/credit/packageManage/index'))
     # c = changge_check_params("code = '00000000';msg='成功'")
     # print(type(c['code']))
     # print(type(c['msg']))
     # print(proDir)
-    get_line_data()
+    # get_line_data()
+    first_delete_all('2')
