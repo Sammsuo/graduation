@@ -61,7 +61,8 @@ def public_get(req):
 def run_api_test(req):  # 上传
     if req.method == 'get' or 'GET':
         print('进来啦')
-        testobj = RunTest.RutnTest()
+
+        testobj = RunTest.RunTest()
         ret = testobj.run()
         common.delete_file()
         return JsonResponse(_get_req_json_dic(ret, 0, '成功'))
