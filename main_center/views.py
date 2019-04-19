@@ -58,10 +58,12 @@ def public_get(req):
         return JsonResponse(_get_req_json_dic('', -1, '无效请求'))
 
 
-def run_api_test(req):  # 上传
+def run_api_test(req):  # 上传 传收件email # TODO 待测
     if req.method == 'get' or 'GET':
         print('进来啦')
-
+        print(json.loads(req.body)['receiver'])
+        email_receiver = json.loads(req.body)['receiver']
+        localReadconfig.set_email('receiver', email_receiver)
         testobj = RunTest.RunTest()
         ret = testobj.run()
         common.delete_file()
@@ -116,12 +118,12 @@ def download_case(req):
 
             flag = json.loads(req.body)['flag']
             if flag == '1':
-                res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\download_template\Func_case.xlsx'))
+                res = StreamingHttpResponse(file_iterator(localReadconfig.get_path('template_func_path')))
             if flag == '2':
-                res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\download_template\API_case.xlsx'))
+                res = StreamingHttpResponse(file_iterator(localReadconfig.get_path('template_api_path')))
             if flag == '3':
-                res = StreamingHttpResponse(file_iterator(r'D:\pycharm\graduation\main_center\utils\checkDB\DDL_file\Template-DDL.sql'))
-            res['Content-Type'] = 'aaplication/octet.stream'
+                res = StreamingHttpResponse(file_iterator(localReadconfig.get_path('template_ddl_path')))
+            res['Content-Type'] = 'aaplication/octet.stream' # TODO octet.stream
             res['Content-Dispositon'] = 'attachment;'
             # print('aaaaa')
             return res

@@ -7,10 +7,11 @@ from datetime import datetime
 from xml.etree import ElementTree as ElementTree
 import datetime
 from main_center.utils import configDB
+from main_center.utils import readConfig
 
 proDir = os.path.split(os.path.realpath(__file__))[0]
-# localDB = configDB.MyDB()
-
+localDB = configDB.MyDB()
+localReadConfig = readConfig.ReadConfig()
 
 def check_url(url):
     check_rule_r = r'(https?:.*?:.*?/)'
@@ -302,21 +303,21 @@ def first_delete_all(flag):
     :return:
     """
     file_path_dict = {
-        '1': '/Users/sam/PycharmProjects/graduation/main_center/utils/checkDB/DDL_file',  # DDL
-        '2': '/Users/sam/PycharmProjects/graduation/main_center/utils/testFile',
+        '1': localReadConfig.get_path('ddl_save_path'),  # DDL
+        '2': localReadConfig.get_path('test_file_path'),
         '3': ''
     }
     file_list = os.listdir(file_path_dict[flag])
     for i in file_list:
         print(i)
-        if i == '1':
+        if flag == '1':
             if i != 'Template-DDL.sql':
-                pass
-        if i == '2':
+                print('删除:', i)
+                os.remove(file_path_dict[flag]+i)
+        if flag == '2':
             if i != 'test_excel.xlsx' or '__pycache__' or 'emailStyle.txt' or '__init__.py' or 'SQL.xml':
-                pass
-
-
+                print('删除:', i)
+                os.remove(file_path_dict[flag]+i)
 
 
 if __name__ == '__main__':
@@ -326,4 +327,4 @@ if __name__ == '__main__':
     # print(type(c['msg']))
     # print(proDir)
     # get_line_data()
-    first_delete_all('2')
+    first_delete_all('1')
