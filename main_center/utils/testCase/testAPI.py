@@ -123,16 +123,16 @@ class APITest(unittest.TestCase):
             print(ex)
             print("弄上去禅道" + '\n' + '\n')
 
-            # insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
-            #                  '请求报文：<br/>' + json.dumps(
-            #     localConfigHttp.params) + '<br/><br/>' + '报错信息：<br/>' + r'<span style="color:red"><b>' + repr(
-            #     ex) + '</b></span><br/><br/>' + '返回报文：<br/>' + json.dumps(self.return_json.json()),
-            #                  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            #                  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
-            # localDB.insert_zt_bug(*insert_params)
-            #
-            # self.logger.exception(ex)
-            # raise AssertionError(repr(ex))
+            insert_params = ['接口用例' + self.case_name + '报错', '接口地址：<br/>' + self.return_json.url + '<br/><br/>' +
+                             '请求报文：<br/>' + json.dumps(
+                localConfigHttp.params) + '<br/><br/>' + '报错信息：<br/>' + r'<span style="color:red"><b>' + repr(
+                ex) + '</b></span><br/><br/>' + '返回报文：<br/>' + json.dumps(self.return_json.json()),
+                             datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                             datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')]
+            localDB.insert_zt_bug(*insert_params)
+
+            self.logger.exception(ex)
+            raise AssertionError(repr(ex))
 
         else:
             self.log.build_case_line(self.case_name, self.check_param)

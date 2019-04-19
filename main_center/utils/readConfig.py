@@ -19,12 +19,17 @@ class ReadConfig:
             file.close()
         fd.close()
 
-        self.cf = configparser.ConfigParser()  # TODO
+        self.cf = configparser.ConfigParser()  # 对config文件进行修改
         self.cf.read(configPath)
 
     def get_email(self, name):
         value = self.cf.get("EMAIL", name)
         return value
+
+    def set_email(self, name, value):
+        self.cf.set('EMAIL', name, value)
+        with open(configPath, 'w+') as f:
+            self.cf.write(f)
 
     def get_http(self, name):
         value = self.cf.get("HTTP", name)
