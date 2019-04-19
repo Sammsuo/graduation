@@ -1,0 +1,33 @@
+2019-04-02 15:05:59,512 - root - INFO - --------send_code_false START--------
+2019-04-02 15:05:59,667 - root - INFO - URL：
+http://47.107.21.127:8089/customer/app/base/isRegister
+2019-04-02 15:05:59,667 - root - INFO - Request：
+{
+    "applicationCode": "fyx",
+    "loginPhoneNum": "13533443305"
+}
+2019-04-02 15:05:59,680 - root - INFO - --------register_success START--------
+2019-04-02 15:05:59,771 - root - INFO - URL：
+http://47.107.21.127:8089/customer/inside/base/register
+2019-04-02 15:05:59,772 - root - INFO - Request：
+{
+    "applicationCode": "fyx",
+    "loginPhoneNum": "13533443305",
+    "password": "111111"
+}
+2019-04-02 15:05:59,798 - root - INFO - --------login_success START--------
+2019-04-02 15:05:59,897 - root - INFO - URL：
+http://47.107.21.127:8089/customer/inside/base/login
+2019-04-02 15:05:59,898 - root - INFO - Request：
+{
+    "applicationCode": "fyx",
+    "loginCode": "13533443305",
+    "password": "111111"
+}
+2019-04-02 15:05:59,912 - root - INFO - --------check_info START--------
+2019-04-02 15:05:59,956 - root - INFO - URL：
+http://47.107.21.127:8089/customer/app/customer/info
+2019-04-02 15:05:59,957 - root - INFO - Request：
+{
+    "customerId": ""
+}
